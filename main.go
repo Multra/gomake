@@ -17,9 +17,15 @@ func main() {
 }
 
 func createfile(fname string) {
-	if _, err := os.Stat("./fname"); err == nil {
-		fmt.Println("File does not exist")
+	if _, err := os.Stat("./"+fname); os.IsNotExist(err) {
+		fmt.Println(fname +" created")
+        file, err := os.Create(fname)
+        if err != nil {
+            panic(err)
+        }
+        fmt.Fprintf(file,"package main\n\nimport (\n\t\"fmt\"\n)\n\nfunc main() {\n}")
+        file.Close()
 	} else {
-		fmt.Println("File exists")
+		fmt.Println(fname+" already exists, exiting")
 	}
 }
